@@ -482,7 +482,7 @@ void PangolinDSOViewer::publishGraph(const std::map<uint64_t,Eigen::Vector2i> &c
     if(disableAllDisplay) return;
 
 	model3DMutex.lock();
-	connections.resize(connectivity.size()/2);
+    connections.resize(connectivity.size());
 	int runningID=0;
 	int totalActFwd=0, totalActBwd=0, totalMargFwd=0, totalMargBwd=0;
     for(std::pair<uint64_t,Eigen::Vector2i> p : connectivity)
@@ -517,7 +517,7 @@ void PangolinDSOViewer::publishGraph(const std::map<uint64_t,Eigen::Vector2i> &c
 		runningID++;
 	}
 
-	connections.resize(runningID);
+
 	model3DMutex.unlock();
 }
 
