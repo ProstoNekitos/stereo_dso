@@ -43,5 +43,5 @@ namespace dso
 
     extern float baseline;
 
-	void setGlobalCalib(int w, int h, Eigen::Matrix3f K );
+	void setGlobalCalib(int w, int h, const Eigen::Matrix3f &K );
 }
