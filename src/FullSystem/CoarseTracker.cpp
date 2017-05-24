@@ -38,6 +38,10 @@
 #include "IOWrapper/ImageRW.h"
 #include <algorithm>
 
+#ifndef __SSE3__
+#include "SSE2NEON.h"
+#endif
+
 namespace dso
 {
 
