@@ -2,3 +2,4 @@
 *.a
 *.so.*
 thirdparty/libzip-1.1.1
+cmake-build-debug

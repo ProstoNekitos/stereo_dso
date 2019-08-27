@@ -56,9 +56,9 @@ public:
 	{
 		for(int i=0;i<NUM_THREADS;i++)
 		{
-			if(accE[i] != 0) delete[] accE[i];
-			if(accEB[i] != 0) delete[] accEB[i];
-			if(accD[i] != 0) delete[] accD[i];
+			accE[i];
+			accEB[i];
+			accD[i];
 		}
 	};
 
@@ -66,9 +66,9 @@ public:
 	{
 		if(n != nframes[tid])
 		{
-			if(accE[tid] != 0) delete[] accE[tid];
-			if(accEB[tid] != 0) delete[] accEB[tid];
-			if(accD[tid] != 0) delete[] accD[tid];
+			accE[tid];
+			accEB[tid];
+			accD[tid];
 			accE[tid] = new AccumulatorXX<8,CPARS>[n*n];
 			accEB[tid] = new AccumulatorX<8>[n*n];
 			accD[tid] = new AccumulatorXX<8,8>[n*n*n];

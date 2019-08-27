@@ -58,7 +58,7 @@ public:
 	{
 		for(int tid=0;tid < NUM_THREADS; tid++)
 		{
-			if(acc[tid] != 0) delete[] acc[tid];
+			delete[] acc[tid];
 		}
 	};
 
@@ -67,7 +67,7 @@ public:
 
 		if(nFrames != nframes[tid])
 		{
-			if(acc[tid] != 0) delete[] acc[tid];
+			delete[] acc[tid];
 #if USE_XI_MODEL
 			acc[tid] = new Accumulator14[nFrames*nFrames];
 #else

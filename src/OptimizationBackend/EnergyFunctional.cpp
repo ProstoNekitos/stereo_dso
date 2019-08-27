@@ -46,8 +46,8 @@ bool EFDeltaValid = false;
 void EnergyFunctional::setAdjointsF(CalibHessian* Hcalib)
 {
 
-	if(adHost != 0) delete[] adHost;
-	if(adTarget != 0) delete[] adTarget;
+	delete[] adHost;
+	delete[] adTarget;
 	adHost = new Mat88[nFrames*nFrames];
 	adTarget = new Mat88[nFrames*nFrames];
 
@@ -87,8 +87,8 @@ void EnergyFunctional::setAdjointsF(CalibHessian* Hcalib)
 	cPrior = VecC::Constant(setting_initialCalibHessian);
 
 
-	if(adHostF != 0) delete[] adHostF;
-	if(adTargetF != 0) delete[] adTargetF;
+	delete[] adHostF;
+	delete[] adTargetF;
 	adHostF = new Mat88f[nFrames*nFrames];
 	adTargetF = new Mat88f[nFrames*nFrames];
 
@@ -150,13 +150,13 @@ EnergyFunctional::~EnergyFunctional()
 		delete f;
 	}
 
-	if(adHost != 0) delete[] adHost;
-	if(adTarget != 0) delete[] adTarget;
+	delete[] adHost;
+	delete[] adTarget;
 
 
-	if(adHostF != 0) delete[] adHostF;
-	if(adTargetF != 0) delete[] adTargetF;
-	if(adHTdeltaF != 0) delete[] adHTdeltaF;
+	delete[] adHostF;
+	delete[] adTargetF;
+	delete[] adHTdeltaF;
 
 
 
@@ -170,7 +170,7 @@ EnergyFunctional::~EnergyFunctional()
 
 void EnergyFunctional::setDeltaF(CalibHessian* HCalib)
 {
-	if(adHTdeltaF != 0) delete[] adHTdeltaF;
+	delete[] adHTdeltaF;
 	adHTdeltaF = new Mat18f[nFrames*nFrames];
 	for(int h=0;h<nFrames;h++)
 		for(int t=0;t<nFrames;t++)
