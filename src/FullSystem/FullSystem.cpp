@@ -118,14 +118,14 @@ FullSystem::FullSystem()
 	}
 	else
 	{
-		nullspacesLog=0;
-		variancesLog=0;
-		DiagonalLog=0;
-		eigenALog=0;
-		eigenPLog=0;
-		eigenAllLog=0;
-		numsLog=0;
-		calibLog=0;
+		nullspacesLog = nullptr;
+		variancesLog = nullptr;
+		DiagonalLog = nullptr;
+		eigenALog = nullptr;
+		eigenPLog = nullptr;
+		eigenAllLog = nullptr;
+		numsLog = nullptr;
+		calibLog = nullptr;
 	}
 
 	assert(retstat!=293847);
@@ -218,7 +218,7 @@ void FullSystem::setOriginalCalib(const VecXf &originalCalib, int originalW, int
 
 void FullSystem::setGammaFunction(float* BInv)
 {
-	if(BInv==0) return;
+	if( !BInv ) return;
 
 	// copy BInv.
 	memcpy(Hcalib.Binv, BInv, sizeof(float)*256);
@@ -243,7 +243,7 @@ void FullSystem::setGammaFunction(float* BInv)
 	Hcalib.B[255] = 255;
 }
 
-void FullSystem::printResult(std::string file)
+void FullSystem::printResult(const std::string& file)
 {
 	boost::unique_lock<boost::mutex> lock(trackMutex);
 	boost::unique_lock<boost::mutex> crlock(shellPoseMutex);
@@ -298,7 +298,7 @@ void FullSystem::printResult(std::string file)
 Vec4 FullSystem::trackNewCoarse(FrameHessian* fh, FrameHessian* fh_right)
 {
 
-	assert(allFrameHistory.size() > 0);
+	assert(allFrameHistory.empty());
 	// set pose initialization.
 
 //    printf("the size of allFrameHistory is %d \n", (int)allFrameHistory.size());
@@ -321,7 +321,7 @@ Vec4 FullSystem::trackNewCoarse(FrameHessian* fh, FrameHessian* fh_right)
 
 		lastF_2_fh_tries.push_back(SE3(Eigen::Matrix<double, 3, 3>::Identity(), Eigen::Matrix<double,3,1>::Zero() ));
 
-        for(float rotDelta=0.02; rotDelta < 0.05; rotDelta = rotDelta + 0.02)
+        for(float rotDelta = 0.02; rotDelta < 0.05; rotDelta += 0.02)
         {
             lastF_2_fh_tries.push_back(SE3(Sophus::Quaterniond(1,rotDelta,0,0), Vec3(0,0,0)));			// assume constant motion.
             lastF_2_fh_tries.push_back(SE3(Sophus::Quaterniond(1,0,rotDelta,0), Vec3(0,0,0)));			// assume constant motion.
@@ -1219,7 +1219,7 @@ void FullSystem::mappingLoop()
 
 	while(runMapping)
 	{
-		while(unmappedTrackedFrames.size()==0)
+		while( !unmappedTrackedFrames.size() )
 		{
 			trackedFrameSignal.wait(lock);
 			if(!runMapping) return;
@@ -1613,7 +1613,7 @@ void FullSystem::setPrecalcValues()
 
 void FullSystem::printLogLine()
 {
-	if(frameHessians.size()==0) return;
+	if( !frameHessians.size() ) return;
 
     if(!setting_debugout_runquiet)
         printf("LOG %d: %.3f fine. Res: %d A, %d L, %d M; (%'d / %'d) forceDrop. a=%f, b=%f. Window %d (%d)\n",
@@ -1734,7 +1734,7 @@ void FullSystem::printEigenValLine()
 
 	std::vector<VecX> &nsp = ef->lastNullspaces_forLogging;
 	(*nullspacesLog) << allKeyFramesHistory.back()->id << " ";
-	for(unsigned int i=0;i<nsp.size();i++)
+	for(size_t i=0;i<nsp.size();i++)
 		(*nullspacesLog) << nsp[i].dot(ef->lastHS * nsp[i]) << " " << nsp[i].dot(ef->lastbS) << " " ;
 	(*nullspacesLog) << "\n";
 	nullspacesLog->flush();

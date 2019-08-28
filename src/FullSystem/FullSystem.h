@@ -149,7 +149,7 @@ public:
 
 
 
-	void printResult(std::string file);
+	void printResult(const std::string& file);
 
 	void debugPlot(std::string name);
 

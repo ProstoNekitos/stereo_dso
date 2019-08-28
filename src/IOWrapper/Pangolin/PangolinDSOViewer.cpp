@@ -407,7 +407,7 @@ void PangolinDSOViewer::drawConstraints()
 		glBegin(GL_LINES);
 		for(unsigned int i=0;i<connections.size();i++)
 		{
-			if(connections[i].to == 0 || connections[i].from==0) continue;
+			if( !connections[i].to || !connections[i].from ) continue;
 			int nAct = connections[i].bwdAct + connections[i].fwdAct;
 			int nMarg = connections[i].bwdMarg + connections[i].fwdMarg;
 			if(nAct==0 && nMarg>0  )
@@ -619,8 +619,8 @@ void PangolinDSOViewer::pushDepthImage(MinimalImageB3* image)
 
 	boost::unique_lock<boost::mutex> lk(openImagesMutex);
 
-	struct timeval time_now;
-	gettimeofday(&time_now, NULL);
+	timeval time_now;
+	gettimeofday(&time_now, nullptr);
 	lastNMappingMs.push_back(((time_now.tv_sec-last_map.tv_sec)*1000.0f + (time_now.tv_usec-last_map.tv_usec)/1000.0f));
 	if(lastNMappingMs.size() > 10) lastNMappingMs.pop_front();
 	last_map = time_now;
