@@ -1109,6 +1109,8 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
 	fh_right->ab_exposure = image_right->exposure_time;
 	fh_right->makeImages(image_right->image,&Hcalib);
 
+	delete image;
+	delete image_right;
 
 	if(!initialized)
 	{
