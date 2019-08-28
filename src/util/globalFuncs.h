@@ -29,7 +29,6 @@
 #include "IOWrapper/ImageDisplay.h"
 #include "fstream"
 #include <cmath>
-#include <cv.h>
 #include <opencv2/highgui/highgui.hpp>
 
 

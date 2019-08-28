@@ -55,7 +55,6 @@
 #include "util/ImageAndExposure.h"
 
 #include <cmath>
-#include <cv.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -1109,7 +1108,8 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
     fh->makeImages(image->image, &Hcalib);
 	fh_right->ab_exposure = image_right->exposure_time;
 	fh_right->makeImages(image_right->image,&Hcalib);
-	
+
+
 	if(!initialized)
 	{
 		// use initializer!
