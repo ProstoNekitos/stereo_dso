@@ -582,6 +582,7 @@ void Undistort::applyBlurNoise(float* img) const
 
 	delete[] noiseMapX;
 	delete[] noiseMapY;
+	delete[] blutTmp;
 }
 
 void Undistort::makeOptimalK_crop()
