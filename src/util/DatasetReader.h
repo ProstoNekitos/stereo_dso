@@ -110,7 +110,7 @@ struct PrepImageItem
 
 	inline void release()
 	{
-		if(pt!=0) delete pt;
+		delete pt;
 		pt=0;
 	}
 };

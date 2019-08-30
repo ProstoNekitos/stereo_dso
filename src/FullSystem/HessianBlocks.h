@@ -232,7 +232,8 @@ struct FrameHessian
 	inline ~FrameHessian()
 	{
 		assert(!efFrame);
-		release(); instanceCounter--;
+		release();
+		instanceCounter--;
 		for(int i=0;i<pyrLevelsUsed;i++)
 		{
 			delete[] dIp[i];
