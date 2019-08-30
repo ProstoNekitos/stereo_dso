@@ -1252,15 +1252,15 @@ void FullSystem::mappingLoop()
 
 			if(needToKetchupMapping && unmappedTrackedFrames.size() > 0)
 			{
-				FrameHessian* fh = unmappedTrackedFrames.front();
+				FrameHessian* fh_unmapped= unmappedTrackedFrames.front();
 				unmappedTrackedFrames.pop_front();
 				{
 					boost::unique_lock<boost::mutex> crlock(shellPoseMutex);
-					assert(fh->shell->trackingRef != 0);
-					fh->shell->camToWorld = fh->shell->trackingRef->camToWorld * fh->shell->camToTrackingRef;
-					fh->setEvalPT_scaled(fh->shell->camToWorld.inverse(),fh->shell->aff_g2l);
+					assert(fh_unmapped->shell->trackingRef != 0);
+                    fh_unmapped->shell->camToWorld = fh_unmapped->shell->trackingRef->camToWorld * fh_unmapped->shell->camToTrackingRef;
+                    fh_unmapped->setEvalPT_scaled(fh_unmapped->shell->camToWorld.inverse(),fh_unmapped->shell->aff_g2l);
 				}
-				delete fh;
+				delete fh_unmapped;
                 delete fh_right;
 			}
 
