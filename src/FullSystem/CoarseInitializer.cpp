@@ -74,7 +74,7 @@ CoarseInitializer::~CoarseInitializer()
 {
 	for(int lvl=0; lvl<pyrLevelsUsed; lvl++)
 	{
-		if(points[lvl] != 0) delete[] points[lvl];
+		delete[] points[lvl];
 		delete[] idepth[lvl];
 	}
 
@@ -807,7 +807,7 @@ void CoarseInitializer::setFirstStereo(	CalibHessian* HCalib, FrameHessian* newF
 			npts = makePixelStatus(firstFrame->dIp[lvl], statusMapB, w[lvl], h[lvl], densities[lvl]*w[0]*h[0]);
 		}
 
-		if(points[lvl] != 0) delete[] points[lvl];
+		delete[] points[lvl];
 		points[lvl] = new Pnt[npts];
 
 		// set idepth map by static stereo matching. if no idepth is available, set 0.01.
@@ -968,7 +968,7 @@ void CoarseInitializer::setFirst(	CalibHessian* HCalib, FrameHessian* newFrameHe
 		else
 			npts = makePixelStatus(firstFrame->dIp[lvl], statusMapB, w[lvl], h[lvl], densities[lvl]*w[0]*h[0]);
 
-		if(points[lvl] != 0) delete[] points[lvl];
+		delete[] points[lvl];
 		points[lvl] = new Pnt[npts];
 
 		// set idepth map to initially 1 everywhere.

@@ -242,7 +242,7 @@ struct FrameHessian
 
 
 
-		if(debugImage != 0) delete debugImage;
+		delete debugImage;
 	};
 	inline FrameHessian()
 	{

@@ -94,7 +94,7 @@ void KeyFrameDisplay::setFromKF(FrameHessian* fh, CalibHessian* HCalib)
 
 	if(numSparseBufferSize < npoints)
 	{
-		if(originalInputSparse != 0) delete originalInputSparse;
+		delete originalInputSparse;
 		numSparseBufferSize = npoints+100;
         originalInputSparse = new InputPointSparse<MAX_RES_PER_POINT>[numSparseBufferSize];
 	}
