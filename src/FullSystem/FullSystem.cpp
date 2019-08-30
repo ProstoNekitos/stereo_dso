@@ -870,7 +870,7 @@ void FullSystem::activatePointsMT()
 //				immature_invalid_deleted++;
 				// remove point.
 				delete ph;
-				host->immaturePoints[i]=0;
+				host->immaturePoints[i] = nullptr;
 				continue;
 			}
 
@@ -948,7 +948,7 @@ void FullSystem::activatePointsMT()
 			ef->insertPoint(newpoint);
 			for(PointFrameResidual* r : newpoint->residuals)
 				ef->insertResidual(r);
-			assert(newpoint->efPoint != 0);
+			assert(newpoint->efPoint);
 			delete ph;
 		}
 		else if(newpoint == (PointHessian*)((long)(-1)) || ph->lastTraceStatus==IPS_OOB)
@@ -1128,6 +1128,7 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
 		if(coarseTracker_forNewKF->refFrameID > coarseTracker->refFrameID)
 		{
 			boost::unique_lock<boost::mutex> crlock(coarseTrackerSwapMutex);
+
 			CoarseTracker* tmp = coarseTracker; 
 			coarseTracker=coarseTracker_forNewKF; 
 			coarseTracker_forNewKF=tmp;
@@ -1219,7 +1220,7 @@ void FullSystem::mappingLoop()
 
 	while(runMapping)
 	{
-		while( !unmappedTrackedFrames.size() )
+		while( unmappedTrackedFrames.empty() )
 		{
 			trackedFrameSignal.wait(lock);
 			if(!runMapping) return;
@@ -1244,24 +1245,25 @@ void FullSystem::mappingLoop()
 		if(unmappedTrackedFrames.size() > 3)
 			needToKetchupMapping=true;
 
-		if(unmappedTrackedFrames.size() > 0) // if there are other frames to track, do that first.
+		if(unmappedTrackedFrames.size()) // if there are other frames to track, do that first.
 		{
 			lock.unlock();
 			makeNonKeyFrame(fh, fh_right);
 			lock.lock();
 
-			if(needToKetchupMapping && unmappedTrackedFrames.size() > 0)
+			if(needToKetchupMapping && unmappedTrackedFrames.size())
 			{
-				FrameHessian* fh_unmapped= unmappedTrackedFrames.front();
+				FrameHessian* fh_unmapped = unmappedTrackedFrames.front();
 				unmappedTrackedFrames.pop_front();
 				{
 					boost::unique_lock<boost::mutex> crlock(shellPoseMutex);
-					assert(fh_unmapped->shell->trackingRef != 0);
+					assert(fh_unmapped->shell->trackingRef);
                     fh_unmapped->shell->camToWorld = fh_unmapped->shell->trackingRef->camToWorld * fh_unmapped->shell->camToTrackingRef;
                     fh_unmapped->setEvalPT_scaled(fh_unmapped->shell->camToWorld.inverse(),fh_unmapped->shell->aff_g2l);
 				}
 				delete fh_unmapped;
                 delete fh_right;
+                delete fh;
 			}
 
 		}
@@ -1302,7 +1304,7 @@ void FullSystem::makeNonKeyFrame( FrameHessian* fh, FrameHessian* fh_right)
 	// needs to be set by mapping thread. no lock required since we are in mapping thread.
 	{
 		boost::unique_lock<boost::mutex> crlock(shellPoseMutex);
-		assert(fh->shell->trackingRef != 0);
+		assert(fh->shell->trackingRef);
 		fh->shell->camToWorld = fh->shell->trackingRef->camToWorld * fh->shell->camToTrackingRef;
 		fh->setEvalPT_scaled(fh->shell->camToWorld.inverse(),fh->shell->aff_g2l);
 	}
@@ -1318,7 +1320,7 @@ void FullSystem::makeKeyFrame( FrameHessian* fh, FrameHessian* fh_right)
 	// needs to be set by mapping thread
 	{
 		boost::unique_lock<boost::mutex> crlock(shellPoseMutex);
-		assert(fh->shell->trackingRef != 0);
+		assert(fh->shell->trackingRef);
 		fh->shell->camToWorld = fh->shell->trackingRef->camToWorld * fh->shell->camToTrackingRef;
 		fh->setEvalPT_scaled(fh->shell->camToWorld.inverse(),fh->shell->aff_g2l);
 	}
@@ -1556,7 +1558,7 @@ void FullSystem::initializeFromInitializer(FrameHessian* newFrame)
 		firstFrame->shell->camToWorld = SE3();
 		firstFrame->shell->aff_g2l = AffLight(0,0);
 		firstFrame->setEvalPT_scaled(firstFrame->shell->camToWorld.inverse(),firstFrame->shell->aff_g2l);
-		firstFrame->shell->trackingRef=0;
+		firstFrame->shell->trackingRef = nullptr;
 		firstFrame->shell->camToTrackingRef = SE3();
 
 		newFrame->shell->camToWorld = firstToNew.inverse();
@@ -1613,7 +1615,7 @@ void FullSystem::setPrecalcValues()
 
 void FullSystem::printLogLine()
 {
-	if( !frameHessians.size() ) return;
+	if( frameHessians.empty() ) return;
 
     if(!setting_debugout_runquiet)
         printf("LOG %d: %.3f fine. Res: %d A, %d L, %d M; (%'d / %'d) forceDrop. a=%f, b=%f. Window %d (%d)\n",
@@ -1632,7 +1634,7 @@ void FullSystem::printLogLine()
 
 	if(!setting_logStuff) return;
 
-	if(numsLog != 0)
+	if(numsLog)
 	{
 		(*numsLog) << allKeyFramesHistory.back()->id << " "  <<
 				statistics_lastFineTrackRMSE << " "  <<
@@ -1699,33 +1701,33 @@ void FullSystem::printEigenValLine()
 
 	int nz = std::max(100,setting_maxFrames*10);
 
-	if(eigenAllLog != 0)
+	if(eigenAllLog)
 	{
 		VecX ea = VecX::Zero(nz); ea.head(eigenvaluesAll.size()) = eigenvaluesAll;
 		(*eigenAllLog) << allKeyFramesHistory.back()->id << " " <<  ea.transpose() << "\n";
 		eigenAllLog->flush();
 	}
-	if(eigenALog != 0)
+	if(eigenALog)
 	{
 		VecX ea = VecX::Zero(nz); ea.head(eigenA.size()) = eigenA;
 		(*eigenALog) << allKeyFramesHistory.back()->id << " " <<  ea.transpose() << "\n";
 		eigenALog->flush();
 	}
-	if(eigenPLog != 0)
+	if(eigenPLog)
 	{
 		VecX ea = VecX::Zero(nz); ea.head(eigenP.size()) = eigenP;
 		(*eigenPLog) << allKeyFramesHistory.back()->id << " " <<  ea.transpose() << "\n";
 		eigenPLog->flush();
 	}
 
-	if(DiagonalLog != 0)
+	if(DiagonalLog)
 	{
 		VecX ea = VecX::Zero(nz); ea.head(diagonal.size()) = diagonal;
 		(*DiagonalLog) << allKeyFramesHistory.back()->id << " " <<  ea.transpose() << "\n";
 		DiagonalLog->flush();
 	}
 
-	if(variancesLog != 0)
+	if(variancesLog)
 	{
 		VecX ea = VecX::Zero(nz); ea.head(diagonal.size()) = ef->lastHS.inverse().diagonal();
 		(*variancesLog) << allKeyFramesHistory.back()->id << " " <<  ea.transpose() << "\n";
