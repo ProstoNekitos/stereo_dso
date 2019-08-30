@@ -66,7 +66,8 @@ PointHessian::PointHessian(const ImmaturePoint* const rawPoint, CalibHessian* Hc
 
 void PointHessian::release()
 {
-	for(unsigned int i=0;i<residuals.size();i++) delete residuals[i];
+	for(unsigned int i=0;i<residuals.size();i++)
+	    delete residuals[i];
 	residuals.clear();
 }
 
@@ -131,7 +132,7 @@ void FrameHessian::makeImages(float* color, CalibHessian* HCalib)
 	for(int i=0;i<pyrLevelsUsed;i++)
 	{
 		dIp[i] = new Eigen::Vector3f[wG[i]*hG[i]];
-		absSquaredGrad[i] = new float[wG[i]*hG[i]];
+		absSquaredGrad[i] = new float[wG[i]*hG[i]]; //OwO
 	}
 	dI = dIp[0];
 

@@ -32,6 +32,7 @@
 #include "IOWrapper/ImageDisplay.h"
 #include "util/globalCalib.h"
 #include "FullSystem/HessianBlocks.h"
+#include "util/settings.h"
 #include "util/globalFuncs.h"
 
 namespace dso
@@ -179,6 +180,10 @@ int PixelSelector::makeMaps(
 
 		// select!
 		Eigen::Vector3i n = this->select(fh, map_out,currentPotential, thFactor);
+
+		//don't need those for the rest of the prog
+		for(size_t i = 0; i < pyrLevelsUsed; ++i)
+		    delete[] fh->absSquaredGrad[i];
 
 		// sub-select!
 		numHave = n[0]+n[1]+n[2];

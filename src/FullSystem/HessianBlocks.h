@@ -231,7 +231,7 @@ struct FrameHessian
 
 	inline ~FrameHessian()
 	{
-		assert(efFrame==0);
+		assert(!efFrame);
 		release(); instanceCounter--;
 		for(int i=0;i<pyrLevelsUsed;i++)
 		{
