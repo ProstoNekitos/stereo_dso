@@ -181,7 +181,7 @@ int PixelSelector::makeMaps(
 		// select!
 		Eigen::Vector3i n = this->select(fh, map_out,currentPotential, thFactor);
 
-		//don't need those for the rest of the prog
+		//don't need those any more
 		for(size_t i = 0; i < pyrLevelsUsed; ++i)
 		    delete[] fh->absSquaredGrad[i];
 

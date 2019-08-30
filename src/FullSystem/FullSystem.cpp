@@ -298,7 +298,7 @@ void FullSystem::printResult(const std::string& file)
 Vec4 FullSystem::trackNewCoarse(FrameHessian* fh, FrameHessian* fh_right)
 {
 
-	assert(allFrameHistory.empty());
+	assert(allFrameHistory.size());
 	// set pose initialization.
 
 //    printf("the size of allFrameHistory is %d \n", (int)allFrameHistory.size());
