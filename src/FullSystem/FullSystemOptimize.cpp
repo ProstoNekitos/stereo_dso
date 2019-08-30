@@ -105,7 +105,7 @@ void FullSystem::setNewFrameEnergyTH()
 
 		}
 
-	if(allResVec.size()==0)
+	if(allResVec.empty())
 	{
 		newFrame->frameEnergyTH = 12*12*patternNum;
 		return;		// should never happen, but lets make sure.
