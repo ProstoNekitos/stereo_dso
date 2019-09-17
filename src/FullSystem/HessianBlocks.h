@@ -34,7 +34,6 @@
 #include "util/NumType.h"
 #include "FullSystem/Residuals.h"
 #include "util/ImageAndExposure.h"
-#include "util/FrameShell.h"
 
 
 namespace dso
@@ -241,7 +240,6 @@ struct FrameHessian
 			delete[] absSquaredGrad[i];
 
 		}
-		delete shell;
 		delete debugImage;
 	};
 

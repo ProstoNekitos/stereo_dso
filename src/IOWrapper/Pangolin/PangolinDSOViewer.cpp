@@ -465,7 +465,7 @@ void PangolinDSOViewer::drawConstraints()
 		glLineWidth(3);
 
 		glBegin(GL_LINE_STRIP);
-		for(unsigned int i=0;i<allFramePoses.size();i++)
+		for(unsigned int i=0; i < allFramePoses.size(); i++)
 		{
 			glVertex3f((float)allFramePoses[i][0],
 					(float)allFramePoses[i][1],
@@ -551,16 +551,15 @@ void PangolinDSOViewer::publishCamPose(FrameShell* frame,
     if(disableAllDisplay) return;
 
 	boost::unique_lock<boost::mutex> lk(model3DMutex);
-	struct timeval time_now;
-	gettimeofday(&time_now, NULL);
-	lastNTrackingMs.push_back(((time_now.tv_sec-last_track.tv_sec)*1000.0f + (time_now.tv_usec-last_track.tv_usec)/1000.0f));
+	timeval time_now;
+	gettimeofday(&time_now, nullptr);
+	lastNTrackingMs.push_back(time_now.tv_sec-last_track.tv_sec * 1000.0f + time_now.tv_usec-last_track.tv_usec / 1000.0f);
 	if(lastNTrackingMs.size() > 10) lastNTrackingMs.pop_front();
 	last_track = time_now;
-
 	if(!setting_render_display3D) return;
 
 	currentCam->setFromF(frame, HCalib);
-	allFramePoses.push_back(frame->camToWorld.translation().cast<float>());
+	allFramePoses.emplace_back(frame->camToWorld.translation().cast<float>());
 }
 
 
@@ -621,7 +620,7 @@ void PangolinDSOViewer::pushDepthImage(MinimalImageB3* image)
 
 	timeval time_now;
 	gettimeofday(&time_now, nullptr);
-	lastNMappingMs.push_back(((time_now.tv_sec-last_map.tv_sec)*1000.0f + (time_now.tv_usec-last_map.tv_usec)/1000.0f));
+	lastNMappingMs.push_back(time_now.tv_sec-last_map.tv_sec*1000.0f + time_now.tv_usec-last_map.tv_usec/1000.0f);
 	if(lastNMappingMs.size() > 10) lastNMappingMs.pop_front();
 	last_map = time_now;
 
