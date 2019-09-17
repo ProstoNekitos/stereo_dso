@@ -25,10 +25,8 @@
 
 #pragma once
 
-#include <string.h>
 #include <string>
 #include <cmath>
-
 
 namespace dso
 {
@@ -196,9 +194,6 @@ extern float freeDebugParam5;
 
 
 void handleKey(char k);
-
-
-
 
 extern int staticPattern[10][40][2];
 extern int staticPatternNum[10];

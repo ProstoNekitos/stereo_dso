@@ -504,7 +504,7 @@ void EnergyFunctional::marginalizeFrame(EFFrame* fh)
 	assert(EFAdjointsValid);
 	assert(EFIndicesValid);
 
-	assert((int)fh->points.size()==0);
+	assert(fh->points.empty());
 	int ndim = nFrames*8+CPARS-8;// new dimension
 	int odim = nFrames*8+CPARS;// old dimension
 

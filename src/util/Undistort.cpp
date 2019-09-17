@@ -399,8 +399,8 @@ ImageAndExposure* Undistort::undistort(const MinimalImage<T>* image_raw, float e
 		float* out_data = result->image;
 		float* in_data = photometricUndist->output->image;
 
-		float* noiseMapX=0;
-		float* noiseMapY=0;
+		float* noiseMapX = nullptr;
+		float* noiseMapY = nullptr;
 		if(benchmark_varNoise>0)
 		{
 			int numnoise=(benchmark_noiseGridsize+8)*(benchmark_noiseGridsize+8);
@@ -463,11 +463,8 @@ ImageAndExposure* Undistort::undistort(const MinimalImage<T>* image_raw, float e
 			}
 		}
 
-		if(benchmark_varNoise>0)
-		{
-			delete[] noiseMapX;
-			delete[] noiseMapY;
-		}
+        delete[] noiseMapX;
+        delete[] noiseMapY;
 
 	}
 	else

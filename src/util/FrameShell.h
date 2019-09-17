@@ -54,7 +54,6 @@ public:
 	int marginalizedAt;
 	double movedByOpt;
 
-
 	inline FrameShell()
 	{
 		id=0;
@@ -64,7 +63,7 @@ public:
 		marginalizedAt=-1;
 		movedByOpt=0;
 		statistics_outlierResOnThis=statistics_goodResOnThis=0;
-		trackingRef=0;
+		trackingRef = nullptr;
 		camToTrackingRef = SE3();
 	}
 };

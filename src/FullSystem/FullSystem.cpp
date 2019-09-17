@@ -377,7 +377,7 @@ Vec4 FullSystem::trackNewCoarse(FrameHessian* fh, FrameHessian* fh_right)
         lastF_2_fh_tries.push_back(fh_2_slast.inverse() * fh_2_slast.inverse() * lastF_2_slast);	// assume double motion (frame skipped)
         lastF_2_fh_tries.push_back(SE3::exp(fh_2_slast.log()*0.5).inverse() * lastF_2_slast); // assume half motion.
         lastF_2_fh_tries.push_back(lastF_2_slast); // assume zero motion.
-        lastF_2_fh_tries.push_back(SE3()); // assume zero motion FROM KF.
+        lastF_2_fh_tries.emplace_back(SE3()); // assume zero motion FROM KF.
 
 /*        lastF_2_fh_tries.push_back(SE3::exp(fh_2_slast.log()*1.5).inverse() * SE3::exp(fh_2_slast.log()*1.5).inverse() * lastF_2_slast);
 
@@ -565,6 +565,9 @@ void FullSystem::stereoMatch( ImageAndExposure* image, ImageAndExposure* image_r
     fh->makeImages(image->image, &Hcalib);
     fh_right->ab_exposure = image_right->exposure_time;
     fh_right->makeImages(image_right->image,&Hcalib);
+
+    delete image_right;
+    delete image;
 
     Mat33f K = Mat33f::Identity();
     K(0,0) = Hcalib.fxl();
@@ -1088,7 +1091,6 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
     if(isLost) return;
 	boost::unique_lock<boost::mutex> lock(trackMutex);
 
-
 	// =========================== add into allFrameHistory =========================
 	FrameHessian* fh = new FrameHessian();
 	FrameHessian* fh_right = new FrameHessian();
@@ -1107,10 +1109,10 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
 	fh->ab_exposure = image->exposure_time;
     fh->makeImages(image->image, &Hcalib);
 	fh_right->ab_exposure = image_right->exposure_time;
-	fh_right->makeImages(image_right->image,&Hcalib);
+	fh_right->makeImages(image_right->image, &Hcalib);
 
-	delete image;
-	delete image_right;
+    delete image;
+    delete image_right;
 
 	if(!initialized)
 	{

@@ -40,7 +40,7 @@
 #include "OptimizationBackend/EnergyFunctional.h"
 #include "FullSystem/PixelSelector2.h"
 
-#include <math.h>
+#include <cmath>
 
 namespace dso
 {

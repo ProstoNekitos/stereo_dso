@@ -26,7 +26,6 @@
 #include <cstring>
 #include <iostream>
 
-
 namespace dso
 {
 
@@ -44,10 +43,6 @@ public:
 		image = new float[w*h];
 		exposure_time=1;
 	}
-	inline ~ImageAndExposure()
-	{
-		delete[] image;
-	}
 
 	inline void copyMetaTo(ImageAndExposure &other)
 	{
@@ -60,6 +55,10 @@ public:
 		img->exposure_time = exposure_time;
 		memcpy(img->image, image, w*h*sizeof(float));
 		return img;
+	}
+
+	~ImageAndExposure(){
+	    delete image;
 	}
 };
 

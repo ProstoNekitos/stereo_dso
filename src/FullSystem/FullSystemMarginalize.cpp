@@ -153,7 +153,7 @@ void FullSystem::marginalizeFrame(FrameHessian* frame)
 {
 	// marginalize or remove all this frames points.
 
-	assert((int)frame->pointHessians.size()==0);
+	assert(frame->pointHessians.empty());
 
 
 	ef->marginalizeFrame(frame->efFrame);
@@ -162,7 +162,7 @@ void FullSystem::marginalizeFrame(FrameHessian* frame)
 
 	for(FrameHessian* fh : frameHessians)
 	{
-		if(fh==frame) continue;
+		if(fh == frame) continue;
 
 		for(PointHessian* ph : fh->pointHessians)
 		{

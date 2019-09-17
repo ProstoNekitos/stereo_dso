@@ -34,6 +34,7 @@
 #include "util/NumType.h"
 #include "FullSystem/Residuals.h"
 #include "util/ImageAndExposure.h"
+#include "util/FrameShell.h"
 
 
 namespace dso
@@ -237,14 +238,13 @@ struct FrameHessian
 		for(int i=0;i<pyrLevelsUsed;i++)
 		{
 			delete[] dIp[i];
-			delete[]  absSquaredGrad[i];
+			delete[] absSquaredGrad[i];
 
 		}
-
-
-
+		delete shell;
 		delete debugImage;
 	};
+
 	inline FrameHessian()
 	{
 		instanceCounter++;
